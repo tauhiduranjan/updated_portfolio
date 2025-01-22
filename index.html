@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="stylesheet" href="style.css">
+    <title>Tauhidur Anjan Portfolio </title>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo" data-aos="zoom-in" data-aos-duration="1500">
+                Tauhidur<span>Anjan</span>
+            </div>
+            <div class="links">
+                <div class="link" data-aos="fade-up" data-aos-duration="1500" data-aos-delay="100"><a href="#">Home</a></div>
+                <div class="link" data-aos="fade-up" data-aos-duration="1500" data-aos-delay="200"><a href="#about">About</a></div>
+                <div class="link" data-aos="fade-up" data-aos-duration="1500" data-aos-delay="300"><a href="#skills">Skills</a></div>
+                <div class="link" data-aos="fade-up" data-aos-duration="1500" data-aos-delay="400"><a href="#experience">Experience</a></div>
+                <div class="link" data-aos="fade-up" data-aos-duration="1500" data-aos-delay="500"><a href="#projects">Projects</a></div>
+                <div class="link" data-aos="fade-up" data-aos-duration="1500" data-aos-delay="600"><a href="#contact">Contact</a></div>
+            </div>
+            <i class="fa-solid fa-bars hamburg" onclick="hamburg()"></i>
+        </div>
+        <div class="dropdown">
+            <div class="links">
+                <a href="#">Home</a>
+                <a href="#about">About</a>
+                <a href="#skills">Technologies</a>
+                <a href="#experience">Experience</a>
+                <a href="#contact">Contact</a>
+                <i class="fa-solid fa-xmark cancel" onclick="cancel()"></i>
+            </div>
+        </div>
+    </nav>
+    <section id="about">
+        <div class="main-container">
+            <div class="image" data-aos="zoom-out" data-aos-duration="3000">
+                <img src="main.png" alt="">
+            </div>
+            <div class="content">
+                <h1 data-aos="fade-left" data-aos-duration="1500" data-aos-delay="700">Hey I'm <span>Tauhidur</span></h1>
+                <div class="typewriter" data-aos="fade-right" data-aos-duration="1500" data-aos-delay="900">I'm a <span class="typewriter-text"></span><label for="">|</label></div>
+                <p data-aos="flip-down" data-aos-duration="1500" data-aos-delay="1100">
+                    I am a Computer Science student at the University at Buffalo, graduating in December 2025. My expertise includes software development, data engineering, and web technologies. I have successfully developed full-stack web applications, built data pipelines using Azure Databricks, and created interactive housing marketplaces and games. I am passionate about solving complex problems and delivering impactful solutions.
+                </p>
+                <div class="social-links">
+                    <a href="https://github.com/tauhiduranjan" data-aos="fade-up" data-aos-duration="1500" data-aos-delay="1300"><i class="fa-brands fa-github"></i></a>
+                    <a href="https://linkedin.com/in/tauhidur-anjan" data-aos="fade-up" data-aos-duration="1500" data-aos-delay="1400"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="#" data-aos="fade-up" data-aos-duration="1500" data-aos-delay="1500"><i class="fa-brands fa-twitter"></i></a>
+                </div>
+                <div class="btn" data-aos="zoom-in" data-aos-duration="1500" data-aos-delay="1800">
+                    <button>Hire me</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="experience">
+        <h2 data-aos="fade-up" data-aos-duration="1500">Experience</h2>
+        <div class="job" data-aos="fade-right" data-aos-duration="1500" data-aos-delay="200">
+            <h3>Global Technology Intern</h3>
+            <p>AXA XL | June 2024 - August 2024</p>
+            <ul>
+                <li>Developed ETL pipelines with Azure Databricks and PySpark for seamless cloud migration.</li>
+                <li>Utilized Power BI to identify missing premiums and provide actionable data insights.</li>
+                <li>Analyzed key datasets to drive US sector expansion and support strategic decisions.</li>
+            </ul>
+        </div>
+        <div class="job" data-aos="fade-right" data-aos-duration="1500" data-aos-delay="400">
+            <h3>Software Engineering Fellow</h3>
+            <p>Headstarter | June 2023 - July 2023</p>
+            <ul>
+                <li>Built full-stack web applications using React, Node.js, Flask, and Google Firebase.</li>
+                <li>Developed NLP-based recommendation systems using HuggingFace and OpenAI APIs.</li>
+                <li>Enhanced user experiences through collaborative and agile development practices.</li>
+            </ul>
+        </div>
+        <div class="job" data-aos="fade-right" data-aos-duration="1500" data-aos-delay="600">
+            <h3>Sound Technician</h3>
+            <p>University at Buffalo | February 2022 - Present</p>
+            <ul>
+                <li>Managed audio setups and operations for diverse student events on campus.</li>
+                <li>Collaborated with event teams to ensure optimal audio quality and performance.</li>
+            </ul>
+        </div>
+    </section>
+    <section id="projects">
+        <h2 data-aos="fade-up" data-aos-duration="1500">Projects</h2>
+        <div class="project" data-aos="fade-left" data-aos-duration="1500" data-aos-delay="200">
+            <h3>BuffaLiving</h3>
+            <p>
+                A student housing marketplace with features like property listings, map views, and search filters. Built using React, PHP, MySQL, and Figma for UI design.
+            </p>
+            <a href="https://github.com/cse442-at-ub/fa24-semesterproject-noproblems-1" target="_blank">View Project</a>
+        </div>
+        <div class="project" data-aos="fade-left" data-aos-duration="1500" data-aos-delay="400">
+            <h3>Area51-Z</h3>
+            <p>
+                A first-person zombie shooter game featuring AI mechanics, power-ups, and immersive music. Built using Unreal Engine 5 with C++ and Blueprints.
+            </p>
+            <a href="https://www.youtube.com/watch?v=MWIRqC7YSIY" target="_blank">Watch Video</a>
+        </div>
+    </section>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+      AOS.init({offset:0});
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
