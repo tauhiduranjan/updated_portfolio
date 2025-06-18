@@ -28,6 +28,11 @@ export default function RootLayout({
           rel="stylesheet"
         />
         <link rel="icon" href="/favicon.png" type="image/png" />
+        <meta property="og:title" content="Tauhidur Anjan - Portfolio" />
+        <meta property="og:description" content="CS Graduate Portfolio showcasing projects, experience, and music production" />
+        <meta property="og:image" content="/artboard.jpg" />
+        <meta property="og:url" content="https://tauhiduranjan.vercel.app/" />
+        <meta name="twitter:card" content="summary_large_image" />
       </head>
       <body className={`${inter.variable} font-sans bg-dark text-white [&_h1]:font-satoshi [&_h2]:font-satoshi [&_h3]:font-satoshi [&_h4]:font-satoshi [&_h5]:font-satoshi [&_h6]:font-satoshi`}>
         {children}
