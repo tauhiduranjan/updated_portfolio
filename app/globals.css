@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 10, 15, 26; /* #0A0F1A */
+  --background-end-rgb: 24, 30, 42;   /* #181E2A */
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+    to bottom,
+    rgb(var(--background-start-rgb)),
+    rgb(var(--background-end-rgb))
+  );
+  min-height: 100vh;
+}
+
+@layer components {
+  .nav-link {
+    @apply font-sans text-sm font-light hover:text-primary transition-colors duration-300;
+  }
+  
+  .section-title {
+    @apply font-satoshi text-4xl md:text-5xl font-black mb-8;
+  }
+  
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent animate-gradient-x;
+  }
+} 
