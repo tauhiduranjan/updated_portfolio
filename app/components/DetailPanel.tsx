@@ -166,7 +166,7 @@ export default function DetailPanel({ item, onClose }: DetailPanelProps) {
   useEffect(() => {
     if (!item) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape" || e.key === "Backspace") onClose();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -208,6 +208,7 @@ export default function DetailPanel({ item, onClose }: DetailPanelProps) {
         }}
       >
         ◀ back
+          <span style={{ fontSize: 10, opacity: 0.5, marginLeft: 8, letterSpacing: "0.5px" }}>[esc]</span>
       </button>
       <h3
         style={{

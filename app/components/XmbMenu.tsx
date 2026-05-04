@@ -12,6 +12,7 @@ export default function XmbMenu() {
   const rootRef = useRef<HTMLDivElement>(null);
   const [clock, setClock] = useState("");
   const touchStart = useRef({ x: 0, y: 0 });
+  const lastWheel = useRef(0);
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 640);
@@ -65,6 +66,21 @@ export default function XmbMenu() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [catIdx, itemIdx, activeItem]);
+
+  // Mouse wheel scrolls through items
+  useEffect(() => {
+    const onWheel = (e: WheelEvent) => {
+      if (activeItem) return;
+      const now = Date.now();
+      if (now - lastWheel.current < 150) return; // throttle
+      lastWheel.current = now;
+      const max = CATEGORIES[catIdx].items.length - 1;
+      if (e.deltaY > 0) setItemIdx((i) => Math.min(max, i + 1));
+      else setItemIdx((i) => Math.max(0, i - 1));
+    };
+    window.addEventListener("wheel", onWheel, { passive: true });
+    return () => window.removeEventListener("wheel", onWheel);
+  }, [catIdx, activeItem]);
 
   const handleNav = (dir: "left" | "right" | "up" | "down" | "enter") => {
     const max = CATEGORIES[catIdx].items.length - 1;
@@ -336,7 +352,7 @@ export default function XmbMenu() {
           zIndex: 5,
         }}
       >
-        ← → navigate categories &nbsp;&nbsp; ↑ ↓ navigate items &nbsp;&nbsp; enter / click select
+        ← → categories &nbsp;&nbsp; ↑ ↓ / scroll items &nbsp;&nbsp; enter select &nbsp;&nbsp; esc back
       </div>
 
       {/* Mobile swipe hint — only visible on mobile */}
