@@ -42,7 +42,7 @@ export default function Home() {
       style={{
         position: "relative",
         width: "100vw",
-        height: "100vh",
+        height: "100dvh",
         overflow: "hidden",
         background: "var(--bg-mid)",
       }}

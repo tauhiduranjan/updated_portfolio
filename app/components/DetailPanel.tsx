@@ -187,7 +187,7 @@ export default function DetailPanel({ item, onClose }: DetailPanelProps) {
         zIndex: 10,
         display: "flex",
         flexDirection: "column",
-        padding: "32px 40px",
+        padding: "clamp(18px, 5vw, 40px) clamp(18px, 6vw, 40px)",
         overflowY: "auto",
         animation: "xmbFade 0.3s ease",
       }}

@@ -47,6 +47,7 @@ export default function CustomCursor() {
 
   return (
     <div
+      className="custom-cursor"
       style={{
         position: "fixed",
         left: pos.x,

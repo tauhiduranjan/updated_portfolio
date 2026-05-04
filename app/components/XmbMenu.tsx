@@ -8,8 +8,17 @@ export default function XmbMenu() {
   const [catIdx, setCatIdx] = useState(0);
   const [itemIdx, setItemIdx] = useState(0);
   const [activeItem, setActiveItem] = useState<PortfolioItem | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const [clock, setClock] = useState("");
+  const touchStart = useRef({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 640);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   // Live clock in the top-right
   useEffect(() => {
@@ -29,10 +38,10 @@ export default function XmbMenu() {
     return () => clearInterval(id);
   }, []);
 
-  // Keyboard navigation — arrows for nav, Enter to open
+  // Keyboard navigation
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (activeItem) return; // detail panel handles its own keys
+      if (activeItem) return;
       const max = CATEGORIES[catIdx].items.length - 1;
       if (e.key === "ArrowLeft") {
         e.preventDefault();
@@ -74,19 +83,42 @@ export default function XmbMenu() {
     }
   };
 
-  // Center the active category by translating the icon strip
-  const cardW = 130;
+  // Responsive sizing
+  const iconSize = isMobile ? 52 : 72;
+  const iconGap  = isMobile ? 24 : 58;
+  const cardW    = iconSize + iconGap; // center-to-center distance
   const gridTransform = `translateX(${-catIdx * cardW}px)`;
 
+  // Items list top offset — smaller gap on mobile since icons are smaller
+  const itemsTopOffset = isMobile ? 60 : 88;
+  const itemsMaxH = isMobile ? "min(42vh, 280px)" : "min(330px, calc(50vh - 120px))";
+
   return (
-    <div ref={rootRef} style={{ position: "absolute", inset: 0, zIndex: 2 }}>
+    <div
+      ref={rootRef}
+      style={{ position: "absolute", inset: 0, zIndex: 2 }}
+      onTouchStart={(e) => {
+        if (activeItem) return;
+        touchStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      }}
+      onTouchEnd={(e) => {
+        if (activeItem) return;
+        const dx = e.changedTouches[0].clientX - touchStart.current.x;
+        const dy = e.changedTouches[0].clientY - touchStart.current.y;
+        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
+          handleNav(dx < 0 ? "right" : "left");
+        } else if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 40) {
+          handleNav(dy < 0 ? "down" : "up");
+        }
+      }}
+    >
       {/* Top-left user pill */}
       <div
         style={{
           position: "absolute",
           top: 14,
           left: 18,
-          fontSize: 13,
+          fontSize: isMobile ? 12 : 13,
           fontWeight: 500,
           letterSpacing: "0.5px",
           color: "var(--text-secondary)",
@@ -112,7 +144,7 @@ export default function XmbMenu() {
         >
           T
         </div>
-        Tauhidur Anjan
+        {isMobile ? "Tauhidur" : "Tauhidur Anjan"}
       </div>
 
       {/* Top-right clock */}
@@ -121,7 +153,7 @@ export default function XmbMenu() {
           position: "absolute",
           top: 14,
           right: 18,
-          fontSize: 13,
+          fontSize: isMobile ? 12 : 13,
           fontWeight: 500,
           letterSpacing: "0.5px",
           color: "var(--text-secondary)",
@@ -131,7 +163,7 @@ export default function XmbMenu() {
         {clock}
       </div>
 
-      {/* Stage with category icons */}
+      {/* Category icon strip */}
       <div
         style={{
           position: "absolute",
@@ -144,7 +176,7 @@ export default function XmbMenu() {
         <div
           style={{
             display: "flex",
-            gap: 58,
+            gap: iconGap,
             alignItems: "center",
             transition: "transform 0.45s cubic-bezier(0.22,0.61,0.36,1)",
             transform: gridTransform,
@@ -168,12 +200,12 @@ export default function XmbMenu() {
             >
               <div
                 style={{
-                  width: 72,
-                  height: 72,
+                  width: iconSize,
+                  height: iconSize,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  marginBottom: 12,
+                  marginBottom: isMobile ? 8 : 12,
                   transition: "transform 0.3s ease",
                   transform: ci === catIdx ? "scale(1.18)" : "scale(1)",
                   color: "var(--text-primary)",
@@ -182,7 +214,7 @@ export default function XmbMenu() {
               />
               <div
                 style={{
-                  fontSize: 12,
+                  fontSize: isMobile ? 10 : 12,
                   fontWeight: 500,
                   letterSpacing: "1.5px",
                   textTransform: "uppercase",
@@ -200,15 +232,15 @@ export default function XmbMenu() {
         </div>
       </div>
 
-      {/* Items list — outer div clips, inner div slides to keep selection visible */}
+      {/* Items list */}
       <div
         style={{
           position: "absolute",
           left: "50%",
-          top: "calc(50% + 88px)",
+          top: `calc(50% + ${itemsTopOffset}px)`,
           transform: "translateX(-50%)",
-          width: 580,
-          maxHeight: "min(330px, calc(50vh - 120px))",
+          width: "min(580px, calc(100vw - 32px))",
+          maxHeight: itemsMaxH,
           overflow: "hidden",
         }}
       >
@@ -221,75 +253,77 @@ export default function XmbMenu() {
             transition: "transform 0.35s cubic-bezier(0.22,0.61,0.36,1)",
           }}
         >
-        {CATEGORIES[catIdx].items.map((item, ii) => {
-          const isSel = ii === itemIdx;
-          return (
-            <div
-              key={ii}
-              onClick={() => {
-                setItemIdx(ii);
-                setActiveItem(item);
-              }}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 16,
-                padding: "12px 18px",
-                borderRadius: 6,
-                opacity: isSel ? 1 : 0.6,
-                transition:
-                  "opacity 0.35s cubic-bezier(0.22,0.61,0.36,1), background 0.2s ease, box-shadow 0.2s ease",
-                cursor: "pointer",
-                background: isSel ? "var(--surface-overlay)" : "transparent",
-                boxShadow: isSel ? "inset 3px 0 0 var(--accent)" : "none",
-              }}
-            >
+          {CATEGORIES[catIdx].items.map((item, ii) => {
+            const isSel = ii === itemIdx;
+            return (
               <div
+                key={ii}
+                onClick={() => {
+                  setItemIdx(ii);
+                  setActiveItem(item);
+                }}
                 style={{
-                  width: 32,
-                  height: 32,
-                  flexShrink: 0,
                   display: "flex",
                   alignItems: "center",
-                  justifyContent: "center",
-                  color: isSel ? "var(--accent)" : "var(--text-secondary)",
-                }}
-                dangerouslySetInnerHTML={{ __html: item.icon }}
-              />
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 1,
+                  gap: 16,
+                  padding: isMobile ? "14px 16px" : "12px 18px",
+                  borderRadius: 6,
+                  opacity: isSel ? 1 : 0.6,
+                  transition:
+                    "opacity 0.35s cubic-bezier(0.22,0.61,0.36,1), background 0.2s ease, box-shadow 0.2s ease",
+                  cursor: "pointer",
+                  background: isSel ? "var(--surface-overlay)" : "transparent",
+                  boxShadow: isSel ? "inset 3px 0 0 var(--accent)" : "none",
+                  minHeight: isMobile ? 60 : "auto",
                 }}
               >
                 <div
                   style={{
-                    fontSize: 15,
-                    fontWeight: 500,
-                    color: "var(--text-primary)",
+                    width: isMobile ? 28 : 32,
+                    height: isMobile ? 28 : 32,
+                    flexShrink: 0,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: isSel ? "var(--accent)" : "var(--text-secondary)",
                   }}
-                >
-                  {item.t}
-                </div>
-                <div
-                  style={{
-                    fontSize: 12,
-                    color: "var(--text-muted)",
-                    letterSpacing: "0.4px",
-                  }}
-                >
-                  {item.s}
+                  dangerouslySetInnerHTML={{ __html: item.icon }}
+                />
+                <div style={{ display: "flex", flexDirection: "column", gap: 1, minWidth: 0 }}>
+                  <div
+                    style={{
+                      fontSize: isMobile ? 14 : 15,
+                      fontWeight: 500,
+                      color: "var(--text-primary)",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {item.t}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: 12,
+                      color: "var(--text-muted)",
+                      letterSpacing: "0.4px",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {item.s}
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
         </div>
       </div>
 
-      {/* On-screen control hint */}
+      {/* Keyboard hint — hidden on mobile via CSS */}
       <div
+        className="xmb-keyboard-hint"
         style={{
           position: "absolute",
           bottom: 14,
@@ -302,15 +336,33 @@ export default function XmbMenu() {
           zIndex: 5,
         }}
       >
-        ← → navigate categories &nbsp;&nbsp; ↑ ↓ navigate items &nbsp;&nbsp;
-        enter / click select
+        ← → navigate categories &nbsp;&nbsp; ↑ ↓ navigate items &nbsp;&nbsp; enter / click select
       </div>
 
-      {/* Mobile / accessibility controls */}
+      {/* Mobile swipe hint — only visible on mobile */}
+      {isMobile && (
+        <div
+          style={{
+            position: "absolute",
+            bottom: 14,
+            left: 0,
+            right: 0,
+            textAlign: "center",
+            fontSize: 11,
+            color: "var(--text-muted)",
+            letterSpacing: "0.6px",
+            zIndex: 5,
+          }}
+        >
+          swipe left/right · tap to open
+        </div>
+      )}
+
+      {/* On-screen nav controls */}
       <div
         style={{
           position: "absolute",
-          bottom: 38,
+          bottom: isMobile ? 36 : 38,
           left: 0,
           right: 0,
           display: "flex",

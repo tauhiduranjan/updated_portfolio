@@ -32,7 +32,14 @@ export const CATEGORIES: PortfolioCategory[] = [
         icon: ICONS.user,
         body: `
           <h4>about</h4>
-          <p>Computer Science student at the University at Buffalo, passionate about full-stack development, data engineering, and building things that matter.</p>
+          <p>Computer Science graduate from the University at Buffalo with hands-on experience building and supporting full-stack software systems in both professional and academic settings.
+
+My experience spans software engineering, data analysis, and technical support. I previously worked as a Global Technology Intern at AXA XL, where I supported enterprise data initiatives, contributed to cloud-based automation projects, and collaborated with international stakeholders to improve system accuracy and reliability. As a Software Engineering Fellow at Headstarter, I built full-stack applications using React, Node.js, Flask, and Firebase, gaining experience with APIs, automation, and collaborative development workflows.
+
+In addition, I am a Co-Founder of UB AppDev, a 250+ member mobile and web development organization, where I led technical workshops, coordinated multi-team MVP projects, and mentored students in modern development practices. This role strengthened my leadership, communication, and ability to translate technical concepts to diverse audiences.
+
+Technically, I work most comfortably with Python, Java, JavaScript, REST APIs, SQL, and modern web frameworks, and I enjoy roles that sit at the intersection of engineering, problem-solving, and customer impact.
+</p>
           <h4>links</h4>
           <p>
             <a href="https://github.com/tauhiduranjan" target="_blank" rel="noopener">GitHub →</a>
